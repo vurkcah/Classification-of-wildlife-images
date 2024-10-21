@@ -1,5 +1,4 @@
 pip
 libgl1-mesa-glx
 unzip
-unrar
 p7zip-full
