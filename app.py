@@ -92,12 +92,10 @@ def train_yolo(dataset_folder_path, progress_indicator, chose_model, chose_epoch
     model = YOLO(f"yolo11{chose_model}-cls.pt")
     try:
         # Логи выводятся в процессе обучения
-        progress_indicator.subheader("Обучение модели началось...🧑🏿‍💻")
+        progress_indicator.subheader("Обучение модели началось...")
         with st.spinner("Обучение модели... Пожалуйста, подождите."):
             model.train(data=f'{dataset_folder_path}/dataset', epochs=chose_epochs, name=train_name, device=chose_device)
-        progress_indicator.subheader("Обучение завершено.🦾")
-        st.toast('Обучение завершено!', icon='🎉🎉🎉')
-        download_trained_model(train_name)
+        progress_indicator.subheader("Обучение завершено.")
     except Exception as e:
         progress_indicator.subheader("Произошла ошибка во время обучения.")
 #---------------------------------------------------------------------------------------------#
@@ -106,11 +104,10 @@ def valid_yolo(model_path, progress_indicator, dataset_folder_path, name_valid, 
     model = YOLO(model_path, task='classify')
     try:
         # Логи выводятся в процессе обучения
-        progress_indicator.subheader("Валидация модели началась...🧑🏿‍💻")
+        progress_indicator.subheader("Валидация модели началась...")
         with st.spinner("Валидация модели... Пожалуйста, подождите."):
             model.val(data=f'{dataset_folder_path}/dataset', name=name_valid, device=chose_device)
-        progress_indicator.subheader("Валидация завершена.📈")
-        st.toast('Валидация завершена!', icon='🎉🎉🎉')
+        progress_indicator.subheader("Валидация завершена.")
     except Exception as e:
         progress_indicator.subheader(f"Произошла ошибка во время валидации: {str(e)}")
 #---------------------------------------------------------------------------------------------#
@@ -142,7 +139,6 @@ def classify_images(model_path, image_paths, col1, col2, class_names):
                         for i in range(5):
                             class_name = class_names[top5_indices[i]] if top5_indices[i] < len(class_names) else "Неизвестный класс"
                             st.write(f"Класс: {class_name}, Вероятность: {top5_confidences[i]:.2f}")
-        st.toast('Классификация завершена!', icon='🎉🎉🎉')   
     except Exception as e:
         st.error(f"Произошла ошибка во время классификации: {str(e)}")
 
@@ -210,6 +206,7 @@ if select_action == "Обучение нейросетевого классиф�
         progress_indicator = st.empty()
         # Запуск обучения в основном потоке с анимацией загрузки
         train_yolo(dataset_folder_path_train, progress_indicator, chose_model, chose_epochs, train_name, chose_device_train)
+        download_trained_model(train_name)
     st.session_state['train_model_path'] = f"./runs/classify/{train_name}/weights/best.pt"
 #---------------------------------------------------------------------------------------------#        
 if select_action == "Валидация нейросетевого классификатора":
