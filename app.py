@@ -4,10 +4,8 @@ import shutil
 import tempfile
 from pathlib import Path
 import atexit
-import patoolib
 from ultralytics import YOLO
-import threading
-import time
+
 #---------------------------------------------------------------------------------------------#
 st.set_page_config(
     page_title="Нейросетевой классификатор изображений живой природы",
@@ -18,7 +16,7 @@ st.set_page_config(
 #---------------------------------------------------------------------------------------------#
 # Функция для загрузки папки с датасетом
 def upload_folder():
-    uploaded_archive = st.file_uploader("Загрузите папку с датасетом в формате ZIP или RAR", type=["zip", "rar"])
+    uploaded_archive = st.file_uploader("Загрузите папку с датасетом в формате ZIP", type=["zip"])
     if uploaded_archive:
         folder_path = os.path.join(os.getcwd(), "uploaded_dataset")
         
@@ -34,8 +32,6 @@ def upload_folder():
             
             if uploaded_archive.name.endswith(".zip"):
                 shutil.unpack_archive(archive_path, folder_path)
-            elif uploaded_archive.name.endswith(".rar"):
-                patoolib.extract_archive(archive_path, outdir=folder_path)
             
         st.success(f"Папка успешно сохранена в: {folder_path}")
         return folder_path.replace('\\', '/')
